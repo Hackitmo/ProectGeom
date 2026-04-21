@@ -1,0 +1,55 @@
+import java.io.*;
+import java.util.Arrays;
+import static java.lang.Math.*;
+
+public class Main {
+    public static void main(String[] a) throws Exception {
+        int n = 0;
+        double[] x = new double[1000], y = new double[1000];
+        if (a.length > 0) {
+            BufferedReader r = new BufferedReader(new FileReader(a[0]));
+            n = Integer.parseInt(r.readLine().trim());
+            for (int i = 0; i < n; i++)
+            {
+
+                String[] p = r.readLine().trim().split("[\\s,]+");
+                x[i] = Double.parseDouble(p[0]); y[i] = Double.parseDouble(p[1]);
+            }
+            r.close();
+        } else {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            n = Integer.parseInt(br.readLine().trim());
+            for (int i = 0; i < n; i++)
+            {
+                String[] p = br.readLine().trim().split("[\\s,]+");
+                x[i] = Double.parseDouble(p[0]); y[i] = Double.parseDouble(p[1]);
+            }
+        }
+
+        int h = (n + 1) / 2;
+        double[][] d = new double[n][n];
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                d[i][j] = pow(x[i] - x[j], 2) + pow(y[i] - y[j], 2);
+
+        double[] m = new double[n];
+        for (int i = 0; i < n; i++) {
+            double[] s = d[i].clone();
+            Arrays.sort(s);
+            m[i] = s[h - 1];
+        }
+
+        double min = Double.POSITIVE_INFINITY, r1 = 0, r2 = 0;
+        for (int i = 0; i < n; i++)
+            for (int j = i + 1; j < n; j++) {
+                double v = min(m[i], m[j]);
+                if (v < min) {
+                    min = v;
+                    r1 = sqrt(m[i]);
+                    r2 = sqrt(m[j]);
+                }
+            }
+
+        System.out.println(r1 + "\n" + r2 + "\n" + sqrt(min));
+    }
+}
